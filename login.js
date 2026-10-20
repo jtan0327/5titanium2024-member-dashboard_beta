@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
+    
+    // --- 0. REDIRECT IF ALREADY LOGGED IN ---
+    const existingLogin = localStorage.getItem('loggedInEmail');
+    if (existingLogin) {
+        // User is already logged in, send them straight to the dashboard!
+        window.location.href = "https://sites.google.com/view/5titanium2024/member-dashboard";
+        return; 
+    }
+
     let currentUser = null;
     let loggedInEmailString = ""; 
 
