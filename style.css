@@ -50,7 +50,7 @@ body {
 
 #top-menu .logo-text { 
     font-weight: bold; 
-    font-size: 18px; 
+    font-size: 19px; /* +1px */
     font-family: 'ZCOOL KuaiLe', cursive, sans-serif !important; 
     color: #ffffff !important; 
 }
@@ -66,6 +66,7 @@ body {
     text-decoration: none; 
     color: #ffffff !important; 
     padding: 5px 8px; 
+    font-size: 17px; /* +1px */
     transition: background-color 0.3s ease;
 }
 
@@ -121,6 +122,7 @@ body {
     color: #333; 
     display: block; 
     padding: 10px 15px; 
+    font-size: 17px; /* +1px */
     border-radius: 4px; 
 }
 
@@ -169,13 +171,13 @@ body {
 }
 
 .name-display { 
-    font-size: 20px; 
+    font-size: 21px; /* +1px */
     font-weight: bold; 
     margin-bottom: 5px; 
 }
 
 .top-role { 
-    font-size: 16px; 
+    font-size: 17px; /* +1px */
     margin-bottom: 3px; 
 }
 
@@ -184,7 +186,7 @@ body {
 }
 
 .contact-info p { 
-    font-size: 14px; 
+    font-size: 15px; /* +1px */
     margin-bottom: 5px; 
 }
 
@@ -200,18 +202,18 @@ body {
 }
 
 .roles-container h3 { 
-    font-size: 16px; 
+    font-size: 17px; /* +1px */
     margin-bottom: 10px; 
 }
 
 .role-title { 
     font-weight: bold; 
-    font-size: 14px; 
+    font-size: 15px; /* +1px */
     margin-top: 15px; 
 }
 
 .role-list { 
-    font-size: 14px; 
+    font-size: 15px; /* +1px */
     list-style-type: none; 
     padding-left: 0; 
     margin-top: 5px; 
@@ -241,7 +243,7 @@ body {
 }
 
 .achievement-download {
-    font-size: 14px;
+    font-size: 15px; /* +1px */
     color: #4a86e8;
     text-decoration: none;
     display: block;
@@ -253,14 +255,14 @@ body {
 }
 
 .achievement-name {
-    font-size: 14px;
+    font-size: 15px; /* +1px */
     font-weight: bold;
     color: #333;
 }
 
 .no-record {
     color: #F65353; 
-    font-size: 16px;
+    font-size: 17px; /* +1px */
     font-weight: bold;
     margin-top: 10px;
 }
@@ -271,7 +273,7 @@ body {
 }
 
 .points-total {
-    font-size: 20px;
+    font-size: 21px; /* +1px */
     font-weight: bold;
     margin-bottom: 5px;
     color: #333;
@@ -283,7 +285,7 @@ body {
 
 .no-points-history {
     color: #FF0202;
-    font-size: 15px;
+    font-size: 16px; /* +1px */
     margin-bottom: 15px;
 }
 
@@ -326,7 +328,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 8px;
-    font-size: 15px;
+    font-size: 16px; /* +1px */
     font-weight: bold;
 }
 
@@ -335,35 +337,35 @@ body {
 .point-neutral { color: #007AFF; }
 
 .point-date {
-    font-size: 12px;
+    font-size: 13px; /* +1px */
     color: #007AFF;
     margin-bottom: 6px;
 }
 
 .point-payment {
-    font-size: 12px;
+    font-size: 13px; /* +1px */
     color: #03468F;
 }
 
 /* Member Status Section */
 #section-status h2 { 
-    font-size: 18px; 
+    font-size: 21px; /* Custom 21px hierarchy applied */
     margin-bottom: 5px; 
 }
 
 .monthly-charge { 
-    font-size: 10px; 
+    font-size: 17px; /* Custom 17px hierarchy applied */
     color: #555; 
     margin-bottom: 20px; 
 }
 
 .plan-details h3 { 
-    font-size: 16px; 
+    font-size: 15px; /* Custom 15px hierarchy applied */
     margin-bottom: 10px; 
 }
 
 .plan-list { 
-    font-size: 14px; 
+    font-size: 15px; /* Custom 15px hierarchy applied */
     list-style: none; 
     line-height: 1.8; 
 }
@@ -376,7 +378,7 @@ body {
 }
 
 .contact-admin { 
-    font-size: 12px; 
+    font-size: 13px; /* +1px */
     color: #d93025; 
     margin-top: 30px; 
 }
@@ -414,7 +416,7 @@ footer {
     color: #fff; 
     border-radius: 50%; 
     text-decoration: none; 
-    font-size: 18px; 
+    font-size: 19px; /* +1px */
     transition: background-color 0.3s ease; 
 }
 
@@ -423,7 +425,7 @@ footer {
 .social-icons a:hover { opacity: 0.8; }
 
 .copyright-text p { 
-    font-size: 9px; 
+    font-size: 10px; /* +1px */
     line-height: 1.4; 
     margin: 2px 0; 
     font-weight: bold; 
@@ -471,7 +473,7 @@ footer {
 
 .login-card h2 { 
     margin-bottom: 25px; 
-    font-size: 24px; 
+    font-size: 25px; /* +1px */
 }
 
 .login-card input { 
@@ -480,7 +482,7 @@ footer {
     background: #ffffff;
     border: 1px solid #ccc; 
     border-radius: 4px; 
-    font-size: 16px; 
+    font-size: 17px; /* +1px */
 }
 
 .login-card input:focus { 
@@ -495,7 +497,7 @@ footer {
     border: none; 
     border-radius: 4px; 
     font-weight: bold; 
-    font-size: 16px; 
+    font-size: 17px; /* +1px */
     cursor: pointer; 
     margin-top: 5px; 
     transition: background-color 0.2s; 
@@ -507,7 +509,7 @@ footer {
 
 .error-msg { 
     color: #d93025; 
-    font-size: 12px; 
+    font-size: 13px; /* +1px */
     min-height: 18px; 
     margin: 8px 0; 
     text-align: left; 
@@ -515,7 +517,7 @@ footer {
 }
 
 .welcome-text { 
-    font-size: 14px; 
+    font-size: 15px; /* +1px */
     margin-bottom: 25px; 
 }
 
@@ -536,14 +538,14 @@ footer {
     position: absolute; 
     right: 15px; 
     cursor: pointer; 
-    font-size: 14px; 
+    font-size: 15px; /* +1px */
     color: #555; 
     font-weight: bold; 
 }
 
 .protection-text { 
     margin-top: 30px; 
-    font-size: 11px; 
+    font-size: 12px; /* +1px */
     color: #333; 
     font-weight: bold;
 }
