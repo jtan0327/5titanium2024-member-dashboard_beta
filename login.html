@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - 5 Titanium 2024</title>
     
-    <!-- Website Favicon -->
     <link rel="icon" href="5TI 2024 LO.png" type="image/png">
     
-    <!-- Comic Neue (for mobile) and ZCOOL KuaiLe (for Chinese) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
@@ -18,9 +16,7 @@
 </head>
 <body class="login-page-bg">
     
-    <!-- Top Menu for Login Page -->
     <nav id="top-menu">
-        <!-- Mobile Icons (Hidden on Desktop) -->
         <div class="mobile-icon" id="hamburger-btn">
             <i class="fa-solid fa-bars"></i>
         </div>
@@ -34,7 +30,6 @@
             <i class="fa-solid fa-magnifying-glass"></i>
         </div>
 
-        <!-- Desktop Links -->
         <ul class="nav-links" id="desktop-nav">
             <li><a href="https://sites.google.com/view/5titanium2024/member-dashboard">Member Dashboard</a></li>
             <li><a href="https://sites.google.com/view/5titanium24/home">Home</a></li>
@@ -42,20 +37,23 @@
             <li><a href="https://sites.google.com/view/5titanium2024/asti">ASTI</a></li>
             <li><a href="https://sites.google.com/view/5titanium2024/5%E9%92%9B%E9%A2%91%E9%81%93">5钛频道</a></li>
             
-            <!-- 'More' Dropdown (Always visible now) -->
+            <!-- These 3 items are ONLY visible on Fullscreen Desktop -->
+            <li class="desktop-only-link"><a href="https://sites.google.com/view/5titanium2024/%E5%92%8C%E4%B8%AD%E5%BF%AB%E6%8A%A5">和中快报</a></li>
+            <li class="desktop-only-link"><a href="https://sites.google.com/view/5titanium2024/shop">Shop</a></li>
+            <li class="desktop-only-link"><a href="#" class="active">Login</a></li>
+
+            <!-- 'More' Dropdown (Visible ONLY when collapsed) -->
             <li class="nav-dropdown" id="more-dropdown">
                 <a href="#" class="dropbtn">More <i class="fa-solid fa-chevron-down" style="font-size: 12px;"></i></a>
                 <div class="dropdown-content">
                     <a href="https://sites.google.com/view/5titanium2024/%E5%92%8C%E4%B8%AD%E5%BF%AB%E6%8A%A5">和中快报</a>
                     <a href="https://sites.google.com/view/5titanium2024/shop">Shop</a>
-                    <!-- Login is now inside the dropdown -->
                     <a href="#" class="active">Login</a>
                 </div>
             </li>
         </ul>
     </nav>
 
-    <!-- Mobile Side Drawer -->
     <div id="mobile-drawer" class="drawer">
         <div class="drawer-header">
             <i class="fa-solid fa-xmark" id="close-drawer-btn"></i>
@@ -73,11 +71,9 @@
     </div>
     <div id="drawer-overlay"></div>
 
-    <!-- Login Container -->
     <div class="dashboard-container login-wrapper">
         <div class="login-card">
             
-            <!-- Step 1: Email Input -->
             <div id="step-email">
                 <h2>Sign In</h2>
                 <input type="email" id="email-input" placeholder="Enter email">
@@ -85,7 +81,6 @@
                 <button id="next-btn" class="primary-btn">Next</button>
             </div>
 
-            <!-- Step 2: Password Input -->
             <div id="step-password" style="display: none;">
                 <h2>Enter your password</h2>
                 <p class="welcome-text">Welcome, <span id="display-name"></span> <a href="#" id="change-email">change</a></p>
@@ -103,7 +98,6 @@
         </div>
     </div>
     
-    <!-- Footer -->
     <footer>
         <div class="social-icons">
             <a href="https://youtube.com/@ACTI2024" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
