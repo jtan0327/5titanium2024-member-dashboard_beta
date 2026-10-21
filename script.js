@@ -122,29 +122,52 @@ document.addEventListener('DOMContentLoaded', () => {
         return emailString.split(',').map(e => e.trim()).join(', ');
     }
 
+    // --- NEW PLAN PARSING LOGIC ---
     function parsePlanFeatures(rawText) {
         const lines = rawText.split('\n');
         const listEl = document.getElementById('plan-includes');
         listEl.innerHTML = '';
+        
+        // Remove the very last line if it is empty (GitHub automatically adds an empty trailing newline)
+        if (lines.length > 0 && lines[lines.length - 1].trim() === '') {
+            lines.pop();
+        }
         
         let currentMainItem = null;
         let subList = null;
 
         lines.forEach(line => {
             const trimmed = line.trim();
-            if (!trimmed) return;
 
-            if (trimmed.startsWith('-')) {
+            // 1. Handle intentionally spaced empty lines
+            if (trimmed === '') {
+                const spacer = document.createElement('li');
+                spacer.style.height = '15px'; // Creates a visual 1-line space
+                spacer.style.listStyle = 'none';
+                listEl.appendChild(spacer);
+                
+                currentMainItem = null;
+                subList = null; 
+                return;
+            }
+
+            // 2. Handle literal "\n" typed in the text file
+            // Replaces the \n with a line break and a spacer matching the width of the "✓ " to indent perfectly
+            let formattedText = trimmed.replace(/\\n/g, '<br><span style="display:inline-block; width: 18px;"></span>');
+
+            if (formattedText.startsWith('-')) {
                 if (!subList) {
                     subList = document.createElement('ul');
                     if(currentMainItem) currentMainItem.appendChild(subList);
+                    else listEl.appendChild(subList);
                 }
                 const subLi = document.createElement('li');
-                subLi.textContent = trimmed.substring(1).trim();
+                // Remove the dash but keep the formatted HTML inside
+                subLi.innerHTML = formattedText.substring(1).trim();
                 subList.appendChild(subLi);
             } else {
                 currentMainItem = document.createElement('li');
-                currentMainItem.innerHTML = `✓ ${trimmed}`;
+                currentMainItem.innerHTML = `✓ ${formattedText}`;
                 listEl.appendChild(currentMainItem);
                 subList = null; 
             }
