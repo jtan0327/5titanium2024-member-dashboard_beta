@@ -570,7 +570,12 @@ footer {
 
 /* Base Dropdown Styles */
 .nav-dropdown {
+    display: none; /* HIDDEN ON FULLSCREEN */
     position: relative;
+}
+
+.desktop-only-link {
+    display: block; /* VISIBLE ON FULLSCREEN */
 }
 
 #top-menu .dropdown-content {
@@ -582,7 +587,7 @@ footer {
     z-index: 1001;
     border-radius: 4px;
     top: 100%;
-    right: 0;
+    right: 0; /* Aligns dropdown safely to the right edge */
 }
 
 #top-menu .dropdown-content a {
@@ -661,8 +666,14 @@ footer {
     z-index: 1500;
 }
 
-/* TABLET VIEW (688px to 1050px) */
-@media screen and (max-width: 1050px) and (min-width: 688px) {
+/* TABLET VIEW / COLLAPSE PHASE (688px to 1100px) */
+@media screen and (max-width: 1100px) and (min-width: 688px) {
+    .desktop-only-link {
+        display: none !important; /* Hides extra links during collapse */
+    }
+    .nav-dropdown {
+        display: block !important; /* Shows 'More' dropdown during collapse */
+    }
     #top-menu {
         padding: 0 15px; 
     }
