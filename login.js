@@ -21,6 +21,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // --- MOBILE DRAWER LOGIC FOR LOGIN PAGE ---
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const closeDrawerBtn = document.getElementById('close-drawer-btn');
+    const mobileDrawer = document.getElementById('mobile-drawer');
+    const drawerOverlay = document.getElementById('drawer-overlay');
+
+    if(hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', () => {
+            mobileDrawer.classList.add('open');
+            drawerOverlay.style.display = 'block';
+        });
+
+        closeDrawerBtn.addEventListener('click', () => {
+            mobileDrawer.classList.remove('open');
+            drawerOverlay.style.display = 'none';
+        });
+
+        drawerOverlay.addEventListener('click', () => {
+            mobileDrawer.classList.remove('open');
+            drawerOverlay.style.display = 'none';
+        });
+    }
+
     const sheetId = '11fZl1_k9Txz6zXZqZnZuKcH5PtF6QQuY';
     const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
 
@@ -152,12 +175,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const errorMsg = document.getElementById('password-error');
         const signinBtn = document.getElementById('signin-btn');
         
-        // Disable button and show "Verifying..." status
         errorMsg.style.color = "#333";
         errorMsg.textContent = "Verifying password, please wait...";
         signinBtn.disabled = true;
 
-        // Artificial 1-second delay
         setTimeout(() => {
             signinBtn.disabled = false;
             
@@ -165,16 +186,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const actualPassword = pwdKey ? currentUser[pwdKey] : '';
 
             if (pwdInput !== actualPassword) {
-                errorMsg.style.color = "#d93025"; // Back to red for error
+                errorMsg.style.color = "#d93025"; 
                 errorMsg.textContent = "Password incorrect";
                 return;
             }
 
-            // Success: clear message and redirect
             errorMsg.textContent = "";
             localStorage.setItem('loggedInEmail', loggedInEmailString);
             window.location.href = "https://sites.google.com/view/5titanium2024/member-dashboard";
             
-        }, 1000); // 1000 milliseconds = 1 second
+        }, 1000); 
     });
 });
