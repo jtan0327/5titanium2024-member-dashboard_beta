@@ -39,6 +39,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // --- CLEAR ERROR ON RETYPE ---
+    document.getElementById('password-input').addEventListener('input', function() {
+        document.getElementById('password-error').textContent = "";
+    });
+
     // --- STEP 1: Verify Email ---
     document.getElementById('next-btn').addEventListener('click', () => {
         const emailInput = document.getElementById('email-input').value.trim();
@@ -145,16 +150,31 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('signin-btn').addEventListener('click', () => {
         const pwdInput = document.getElementById('password-input').value;
         const errorMsg = document.getElementById('password-error');
+        const signinBtn = document.getElementById('signin-btn');
         
-        const pwdKey = Object.keys(currentUser).find(k => k.toLowerCase() === 'password');
-        const actualPassword = pwdKey ? currentUser[pwdKey] : '';
+        // Disable button and show "Verifying..." status
+        errorMsg.style.color = "#333";
+        errorMsg.textContent = "Verifying password, please wait...";
+        signinBtn.disabled = true;
 
-        if (pwdInput !== actualPassword) {
-            errorMsg.textContent = "Password incorrect";
-            return;
-        }
+        // Artificial 1-second delay
+        setTimeout(() => {
+            signinBtn.disabled = false;
+            
+            const pwdKey = Object.keys(currentUser).find(k => k.toLowerCase() === 'password');
+            const actualPassword = pwdKey ? currentUser[pwdKey] : '';
 
-        localStorage.setItem('loggedInEmail', loggedInEmailString);
-        window.location.href = "https://sites.google.com/view/5titanium2024/member-dashboard";
+            if (pwdInput !== actualPassword) {
+                errorMsg.style.color = "#d93025"; // Back to red for error
+                errorMsg.textContent = "Password incorrect";
+                return;
+            }
+
+            // Success: clear message and redirect
+            errorMsg.textContent = "";
+            localStorage.setItem('loggedInEmail', loggedInEmailString);
+            window.location.href = "https://sites.google.com/view/5titanium2024/member-dashboard";
+            
+        }, 1000); // 1000 milliseconds = 1 second
     });
 });
