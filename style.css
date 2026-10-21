@@ -27,15 +27,17 @@ body {
     left: 0; 
     width: 100%;
     z-index: 1000; 
-    background-color: transparent; 
+    /* Semi-transparent black background so white text is always readable on the sky */
+    background-color: rgba(0, 0, 0, 0.5); 
     transition: all 0.3s ease; 
-    color: #000000; /* Changed to Black */
+    color: #ffffff; /* Text stays white */
 }
 
 #top-menu.scrolled {
-    background-color: #ffffff; /* Changed to White so black text stays readable */
-    border-bottom: 1px solid #eee;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* Adds a nice subtle shadow */
+    /* Solid black background when you scroll down */
+    background-color: #000000; 
+    border-bottom: 1px solid #333;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
 }
 
 .logo-container { 
@@ -64,14 +66,14 @@ body {
 
 #top-menu a { 
     text-decoration: none; 
-    color: #000000; /* Changed to Black */
+    color: #ffffff; /* Links stay white */
     padding: 5px 8px; 
     transition: background-color 0.3s ease;
 }
 
 #top-menu a.active { 
     font-weight: bold; 
-    background-color: rgba(0, 0, 0, 0.08); /* Changed highlight box to faint dark grey */
+    background-color: rgba(255, 255, 255, 0.2); /* Light highlight box */
     border-radius: 4px; 
 }
 
