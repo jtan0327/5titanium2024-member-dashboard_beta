@@ -20,11 +20,51 @@
     
     <!-- Top Menu for Login Page -->
     <nav id="top-menu">
+        <!-- Mobile Icons (Hidden on Desktop) -->
+        <div class="mobile-icon" id="hamburger-btn">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+        
         <div class="logo-container">
             <img src="5TI 2024 LO.png" alt="5TI Logo" class="navbar-logo">
             <div class="logo-text">5 Titanium 2024</div>
         </div>
-        <ul class="nav-links">
+
+        <div class="mobile-icon search-mobile">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+
+        <!-- Desktop/Tablet Links -->
+        <ul class="nav-links" id="desktop-nav">
+            <li><a href="https://sites.google.com/view/5titanium2024/member-dashboard">Member Dashboard</a></li>
+            <li><a href="https://sites.google.com/view/5titanium24/home">Home</a></li>
+            <li><a href="https://sites.google.com/view/5titanium24/acti-%E8%A1%8C%E6%94%BF%E9%83%A8">ACTI</a></li>
+            <li><a href="https://sites.google.com/view/5titanium2024/asti">ASTI</a></li>
+            <li><a href="https://sites.google.com/view/5titanium2024/5%E9%92%9B%E9%A2%91%E9%81%93">5钛频道</a></li>
+            
+            <!-- Tablet 'More' Dropdown -->
+            <li class="nav-dropdown" id="more-dropdown">
+                <a href="#" class="dropbtn">More <i class="fa-solid fa-chevron-down" style="font-size: 12px;"></i></a>
+                <div class="dropdown-content">
+                    <a href="https://sites.google.com/view/5titanium2024/%E5%92%8C%E4%B8%AD%E5%BF%AB%E6%8A%A5">和中快报</a>
+                    <a href="https://sites.google.com/view/5titanium2024/shop">Shop</a>
+                </div>
+            </li>
+
+            <!-- Desktop Only Links -->
+            <li class="desktop-only"><a href="https://sites.google.com/view/5titanium2024/%E5%92%8C%E4%B8%AD%E5%BF%AB%E6%8A%A5">和中快报</a></li>
+            <li class="desktop-only"><a href="https://sites.google.com/view/5titanium2024/shop">Shop</a></li>
+            
+            <li><a href="#" class="active">Login</a></li>
+        </ul>
+    </nav>
+
+    <!-- Mobile Side Drawer -->
+    <div id="mobile-drawer" class="drawer">
+        <div class="drawer-header">
+            <i class="fa-solid fa-xmark" id="close-drawer-btn"></i>
+        </div>
+        <ul class="drawer-links">
             <li><a href="https://sites.google.com/view/5titanium2024/member-dashboard">Member Dashboard</a></li>
             <li><a href="https://sites.google.com/view/5titanium24/home">Home</a></li>
             <li><a href="https://sites.google.com/view/5titanium24/acti-%E8%A1%8C%E6%94%BF%E9%83%A8">ACTI</a></li>
@@ -32,9 +72,10 @@
             <li><a href="https://sites.google.com/view/5titanium2024/5%E9%92%9B%E9%A2%91%E9%81%93">5钛频道</a></li>
             <li><a href="https://sites.google.com/view/5titanium2024/%E5%92%8C%E4%B8%AD%E5%BF%AB%E6%8A%A5">和中快报</a></li>
             <li><a href="https://sites.google.com/view/5titanium2024/shop">Shop</a></li>
-            <li><a href="#" class="active">Login</a></li>
+            <li><a href="#" style="font-weight: bold;">Login</a></li>
         </ul>
-    </nav>
+    </div>
+    <div id="drawer-overlay"></div>
 
     <!-- Login Container -->
     <div class="dashboard-container login-wrapper">
