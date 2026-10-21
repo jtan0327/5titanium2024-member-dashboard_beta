@@ -1,108 +1,55 @@
+const API_URL = "https://script.google.com/macros/s/AKfycbzw2o9EId0F0SgBNJtTQCP9qQ_x956ZLc9KT326F6WBPq2-rHGgeMKCH1SOEz0KlHwv/exec";
+
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // --- 0. AUTHENTICATION CHECK ---
     const loggedInEmail = localStorage.getItem('loggedInEmail');
     if (!loggedInEmail) {
         window.location.href = "login.html";
         return; 
     }
     
-    // --- 1. NAVBAR SCROLL LOGIC ---
+    // Navbar & Drawer Logic
     const topMenu = document.getElementById('top-menu');
     window.addEventListener('scroll', () => {
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        if (scrollTop > 10) {
-            topMenu.classList.add('scrolled');
-        } else {
-            topMenu.classList.remove('scrolled');
-        }
+        if ((window.pageYOffset || document.documentElement.scrollTop) > 10) topMenu.classList.add('scrolled');
+        else topMenu.classList.remove('scrolled');
     });
 
-    // --- 1.5 MOBILE DRAWER LOGIC ---
     const hamburgerBtn = document.getElementById('hamburger-btn');
     const closeDrawerBtn = document.getElementById('close-drawer-btn');
     const mobileDrawer = document.getElementById('mobile-drawer');
     const drawerOverlay = document.getElementById('drawer-overlay');
 
     if(hamburgerBtn) {
-        hamburgerBtn.addEventListener('click', () => {
-            mobileDrawer.classList.add('open');
-            drawerOverlay.style.display = 'block';
-        });
-
-        closeDrawerBtn.addEventListener('click', () => {
-            mobileDrawer.classList.remove('open');
-            drawerOverlay.style.display = 'none';
-        });
-
-        drawerOverlay.addEventListener('click', () => {
-            mobileDrawer.classList.remove('open');
-            drawerOverlay.style.display = 'none';
-        });
+        hamburgerBtn.addEventListener('click', () => { mobileDrawer.classList.add('open'); drawerOverlay.style.display = 'block'; });
+        closeDrawerBtn.addEventListener('click', () => { mobileDrawer.classList.remove('open'); drawerOverlay.style.display = 'none'; });
+        drawerOverlay.addEventListener('click', () => { mobileDrawer.classList.remove('open'); drawerOverlay.style.display = 'none'; });
     }
 
-    // --- 2. NAVIGATION LOGIC (Tabs) ---
-    const menuProfile = document.getElementById('menu-profile');
-    const menuAchievement = document.getElementById('menu-achievement');
-    const menuPoints = document.getElementById('menu-points');
-    const menuStatus = document.getElementById('menu-status');
-    
-    const secProfile = document.getElementById('section-profile');
-    const secAchievement = document.getElementById('section-achievement');
-    const secPoints = document.getElementById('section-points');
-    const secStatus = document.getElementById('section-status');
-
+    // Tabs Logic
+    const tabs = ['profile', 'achievement', 'points', 'status'];
     function switchTab(tabName) {
-        secProfile.style.display = 'none';
-        secAchievement.style.display = 'none';
-        secPoints.style.display = 'none';
-        secStatus.style.display = 'none';
-        
-        menuProfile.classList.remove('active');
-        menuAchievement.classList.remove('active');
-        menuPoints.classList.remove('active');
-        menuStatus.classList.remove('active');
-
-        if (tabName === 'profile') {
-            secProfile.style.display = 'block';
-            menuProfile.classList.add('active');
-        } else if (tabName === 'achievement') {
-            secAchievement.style.display = 'block';
-            menuAchievement.classList.add('active');
-        } else if (tabName === 'points') {
-            secPoints.style.display = 'block';
-            menuPoints.classList.add('active');
-        } else if (tabName === 'status') {
-            secStatus.style.display = 'block';
-            menuStatus.classList.add('active');
-        }
+        tabs.forEach(t => {
+            document.getElementById(`section-${t}`).style.display = (t === tabName) ? 'block' : 'none';
+            document.getElementById(`menu-${t}`).classList.toggle('active', t === tabName);
+        });
     }
-
-    menuProfile.addEventListener('click', (e) => { e.preventDefault(); switchTab('profile'); });
-    menuAchievement.addEventListener('click', (e) => { e.preventDefault(); switchTab('achievement'); });
-    menuPoints.addEventListener('click', (e) => { e.preventDefault(); switchTab('points'); });
-    menuStatus.addEventListener('click', (e) => { e.preventDefault(); switchTab('status'); });
-    
-    document.getElementById('link-member-status').addEventListener('click', (e) => { 
-        e.preventDefault(); 
-        switchTab('status'); 
+    tabs.forEach(t => {
+        document.getElementById(`menu-${t}`).addEventListener('click', (e) => { e.preventDefault(); switchTab(t); });
     });
+    document.getElementById('link-member-status').addEventListener('click', (e) => { e.preventDefault(); switchTab('status'); });
 
-    // --- 2.5 LOGOUT LOGIC ---
     document.getElementById('menu-logout').addEventListener('click', (e) => {
         e.preventDefault();
         localStorage.removeItem('loggedInEmail'); 
         window.location.href = "login.html"; 
     });
 
-    // --- 3. HELPER FUNCTIONS ---
+    // Helpers
     function populateRoles(roleString, containerId) {
         const container = document.getElementById(containerId);
         container.innerHTML = ''; 
         if (!roleString || roleString.trim() === '-') return;
-
-        const roles = roleString.split(',');
-        roles.forEach(role => {
+        roleString.split(',').forEach(role => {
             if (role.trim()) {
                 const li = document.createElement('li');
                 li.textContent = role.trim();
@@ -111,50 +58,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function getFirstRole(roleString) {
-        if (!roleString || roleString.trim() === '-') return '';
-        const firstRole = roleString.split(',')[0].trim();
-        return firstRole ? `- ${firstRole}` : '';
-    }
-    
-    function formatEmails(emailString) {
-        if (!emailString) return 'No email provided';
-        return emailString.split(',').map(e => e.trim()).join(', ');
-    }
-
-    // --- NEW PLAN PARSING LOGIC ---
     function parsePlanFeatures(rawText) {
         const lines = rawText.split('\n');
         const listEl = document.getElementById('plan-includes');
         listEl.innerHTML = '';
-        
-        // Remove the very last line if it is empty (GitHub automatically adds an empty trailing newline)
-        if (lines.length > 0 && lines[lines.length - 1].trim() === '') {
-            lines.pop();
-        }
+        if (lines.length > 0 && lines[lines.length - 1].trim() === '') lines.pop();
         
         let currentMainItem = null;
         let subList = null;
 
         lines.forEach(line => {
             const trimmed = line.trim();
-
-            // 1. Handle intentionally spaced empty lines
             if (trimmed === '') {
                 const spacer = document.createElement('li');
-                spacer.style.height = '15px'; // Creates a visual 1-line space
-                spacer.style.listStyle = 'none';
+                spacer.style.height = '15px'; spacer.style.listStyle = 'none';
                 listEl.appendChild(spacer);
-                
-                currentMainItem = null;
-                subList = null; 
+                currentMainItem = null; subList = null; 
                 return;
             }
-
-            // 2. Handle literal "\n" typed in the text file
-            // Replaces the \n with a line break and a spacer matching the width of the "✓ " to indent perfectly
             let formattedText = trimmed.replace(/\\n/g, '<br><span style="display:inline-block; width: 18px;"></span>');
-
             if (formattedText.startsWith('-')) {
                 if (!subList) {
                     subList = document.createElement('ul');
@@ -162,7 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     else listEl.appendChild(subList);
                 }
                 const subLi = document.createElement('li');
-                // Remove the dash but keep the formatted HTML inside
                 subLi.innerHTML = formattedText.substring(1).trim();
                 subList.appendChild(subLi);
             } else {
@@ -174,320 +95,118 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- FETCH ACHIEVEMENTS ---
-    function loadAchievements(userName) {
-        const achieveSheetId = '1Tq1U6BukXft5XQJ4ARP0lK9nGdt9pk6P';
-        const achieveCsvUrl = `https://docs.google.com/spreadsheets/d/${achieveSheetId}/export?format=csv`;
-        
-        Papa.parse(achieveCsvUrl, {
-            download: true,
-            header: false,
-            complete: function(results) {
-                try {
-                    const data = results.data;
-                    const container = document.getElementById('achievement-container');
-                    container.innerHTML = ''; 
-                    
-                    const userAchievements = data.filter(row => {
-                        return row[0] && row[0].trim().toLowerCase() === userName.toLowerCase();
-                    });
-
-                    if (userAchievements.length === 0) {
-                        container.innerHTML = '<p class="no-record">No Record Found!</p>';
-                    } else {
-                        userAchievements.forEach(row => {
-                            const achieveName = row[1] ? row[1].trim() : 'Achievement';
-                            const achieveFileId = row[2] ? row[2].trim() : '';
-
-                            if (achieveFileId) {
-                                const card = document.createElement('div');
-                                card.className = 'achievement-card';
-                                
-                                const iframe = document.createElement('iframe');
-                                iframe.className = 'achievement-iframe';
-                                iframe.src = `https://drive.google.com/file/d/${achieveFileId}/preview`;
-                                
-                                const dlLink = document.createElement('a');
-                                dlLink.className = 'achievement-download';
-                                dlLink.href = `https://drive.google.com/uc?export=download&id=${achieveFileId}`;
-                                dlLink.target = "_blank";
-                                dlLink.textContent = "Click to download";
-                                
-                                const nameTag = document.createElement('p');
-                                nameTag.className = 'achievement-name';
-                                nameTag.textContent = achieveName;
-
-                                card.appendChild(iframe);
-                                card.appendChild(dlLink);
-                                card.appendChild(nameTag);
-                                container.appendChild(card);
-                            }
-                        });
-                        if (container.innerHTML === '') {
-                             container.innerHTML = '<p class="no-record">No Record Found!</p>';
-                        }
-                    }
-                } catch(err) {
-                    document.getElementById('achievement-container').innerHTML = '<p class="no-record">Error loading achievements</p>';
-                }
-            }
-        });
-    }
-
-    // --- FETCH POINTS SYSTEM ---
-    function loadPoints(userName) {
-        const pointsSheetId = '15J8DGFOXtyv9V1dTQgweMNJDyrHku8Fj';
-        const pointsGid = '2093043020';
-        const pointsCsvUrl = `https://docs.google.com/spreadsheets/d/${pointsSheetId}/export?format=csv&gid=${pointsGid}`;
-
-        Papa.parse(pointsCsvUrl, {
-            download: true,
-            header: false,
-            complete: function(results) {
-                try {
-                    const data = results.data;
-                    const container = document.getElementById('points-history-container');
-                    const totalDisplay = document.getElementById('total-points-display');
-                    const noMsg = document.getElementById('no-points-msg');
-                    
-                    container.innerHTML = ''; 
-                    
-                    const headerRowIndex = data.findIndex(row => row.some(cell => cell && cell.toString().toLowerCase().includes('name')));
-                    if (headerRowIndex === -1) {
-                        totalDisplay.textContent = "Error: Database headers missing.";
-                        return;
-                    }
-                    
-                    const headers = data[headerRowIndex].map(h => h ? h.trim().toLowerCase() : '');
-                    
-                    const nameIdx = headers.findIndex(h => h.includes('name'));
-                    const pointsIdx = headers.findIndex(h => h.includes('points_system') || h.includes('point'));
-                    const dateIdx = headers.findIndex(h => h === 'date');
-                    const itemIdx = headers.findIndex(h => h.includes('item') || h.includes('action') || h.includes('description') || h.includes('title'));
-                    const paymentIdx = headers.findIndex(h => h.includes('payment'));
-                    const receiptIdx = headers.findIndex(h => h.includes('receipt'));
-
-                    const userRecords = data.slice(headerRowIndex + 1).filter(row => {
-                        return row[nameIdx] && row[nameIdx].trim().toLowerCase() === userName.toLowerCase();
-                    });
-
-                    if (userRecords.length === 0) {
-                        totalDisplay.textContent = "Total points accumulated: 0 pts";
-                        totalDisplay.classList.remove('negative');
-                        noMsg.style.display = 'block';
-                    } else {
-                        noMsg.style.display = 'none';
-                        let totalPoints = 0;
-                        
-                        const sortedRecords = userRecords.reverse();
-
-                        sortedRecords.forEach(row => {
-                            const rawPoints = row[pointsIdx] ? row[pointsIdx].trim() : '0';
-                            const parsedPoints = parseFloat(rawPoints.replace(/[^0-9.-]+/g,"")) || 0;
-                            
-                            totalPoints += parsedPoints;
-
-                            const itemText = row[itemIdx] ? row[itemIdx].trim() : 'Record';
-                            const dateText = row[dateIdx] ? row[dateIdx].trim() : '';
-                            const paymentText = (paymentIdx !== -1 && row[paymentIdx]) ? row[paymentIdx].trim() : '';
-                            const receiptLink = (receiptIdx !== -1 && row[receiptIdx]) ? row[receiptIdx].trim() : '';
-
-                            let typeClass = 'point-neutral'; 
-                            let displayPts = `${parsedPoints} pts`;
-                            
-                            if (parsedPoints > 0) {
-                                typeClass = 'point-earn'; 
-                                displayPts = `+${parsedPoints} pts`;
-                            } else if (parsedPoints < 0) {
-                                typeClass = 'point-deduct'; 
-                                displayPts = `${parsedPoints} pts`; 
-                            }
-
-                            let card;
-                            if (receiptLink && receiptLink !== '-' && receiptLink !== '') {
-                                card = document.createElement('a');
-                                
-                                if (receiptLink.startsWith('http')) {
-                                    card.href = receiptLink;
-                                } else {
-                                    card.href = `https://drive.google.com/file/d/${receiptLink}/view`;
-                                }
-                                
-                                card.target = "_blank";
-                                card.className = 'point-card clickable';
-                                card.title = "Click to view receipt";
-                            } else {
-                                card = document.createElement('div');
-                                card.className = 'point-card';
-                            }
-
-                            const row1 = document.createElement('div');
-                            row1.className = `point-row-1 ${typeClass}`;
-                            
-                            const titleSpan = document.createElement('span');
-                            titleSpan.textContent = itemText;
-                            const ptsSpan = document.createElement('span');
-                            ptsSpan.textContent = displayPts;
-                            
-                            row1.appendChild(titleSpan);
-                            row1.appendChild(ptsSpan);
-                            card.appendChild(row1);
-
-                            if (dateText) {
-                                const dateDiv = document.createElement('div');
-                                dateDiv.className = 'point-date';
-                                dateDiv.textContent = `Date: ${dateText}`;
-                                card.appendChild(dateDiv);
-                            }
-
-                            if (paymentText) {
-                                const payDiv = document.createElement('div');
-                                payDiv.className = 'point-payment';
-                                payDiv.textContent = `Payment method: ${paymentText}`;
-                                card.appendChild(payDiv);
-                            }
-
-                            container.appendChild(card);
-                        });
-
-                        totalDisplay.textContent = `Total points accumulated: ${totalPoints} pts`;
-                        if (totalPoints < 0) {
-                            totalDisplay.classList.add('negative');
-                        } else {
-                            totalDisplay.classList.remove('negative');
-                        }
-                    }
-                } catch (err) {
-                    console.error("Error processing points:", err);
-                    document.getElementById('total-points-display').textContent = "Error loading points data.";
-                }
-            }
-        });
-    }
-
-    // --- MAIN DATA FETCHING ---
+    // MAIN FETCH LOGIC (Secure API Call)
     async function loadDashboardData() {
-        const sheetId = '11fZl1_k9Txz6zXZqZnZuKcH5PtF6QQuY';
-        const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
-        
-        Papa.parse(csvUrl, {
-            download: true,
-            header: false,
-            complete: async function(results) {
-                try {
-                    const data = results.data;
-                    
-                    const headerRowIndex = data.findIndex(row => 
-                        row[0] && row[0].toString().trim().toLowerCase() === 'name'
-                    );
-                    
-                    if (headerRowIndex !== -1 && data.length > headerRowIndex + 1) {
-                        
-                        const targetUserRow = data.slice(headerRowIndex + 1).find(row => {
-                            if (!row[1]) return false;
-                            const emailList = row[1].split(',').map(e => e.trim().toLowerCase());
-                            return emailList.includes(loggedInEmail.toLowerCase());
-                        });
-                        
-                        if (!targetUserRow) {
-                            localStorage.removeItem('loggedInEmail'); 
-                            window.location.href = "login.html"; 
-                            return;
-                        }
-                        
-                        const userName = targetUserRow[0] ? targetUserRow[0].trim() : 'User';
-                        const allUserEmails = targetUserRow[1] ? targetUserRow[1] : ''; 
-                        const userGender = targetUserRow[2] ? targetUserRow[2].trim() : 'L';
-                        const userPhone = targetUserRow[3] ? targetUserRow[3].trim() : 'N/A';
-                        const actiRoleRaw = targetUserRow[4] ? targetUserRow[4].trim() : '';
-                        const astiRoleRaw = targetUserRow[5] ? targetUserRow[5].trim() : '';
-                        const userPlan = targetUserRow[6] ? targetUserRow[6].trim() : 'Premium (Legacy)';
-                        const profilePicId = targetUserRow[7] ? targetUserRow[7].trim() : '';
-                        
-                        document.getElementById('user-name').textContent = userName;
-                        document.getElementById('top-acti-role').textContent = getFirstRole(actiRoleRaw);
-                        document.getElementById('top-asti-role').textContent = getFirstRole(astiRoleRaw);
-                        
-                        document.getElementById('link-member-status').textContent = userPlan;
-                        document.getElementById('user-email').textContent = formatEmails(allUserEmails);
-                        document.getElementById('user-phone').textContent = userPhone;
-                        document.getElementById('plan-name').textContent = userPlan;
-                        
-                        populateRoles(actiRoleRaw, 'acti-roles');
-                        populateRoles(astiRoleRaw, 'asti-roles');
-
-                        const profileImg = document.getElementById('user-profile-pic');
-                        const baseUrl = "https://lh3.googleusercontent.com/d/";
-                        const defaultMaleId = '1rpQ4Zy42TvwZLiy3oplSDvtVeGgDgzKM';
-                        const defaultFemaleId = '1YAXVj4nkU75hiV5U0ewPmoU3qErDMB4-';
-
-                        if (profilePicId && profilePicId !== '-') {
-                            profileImg.src = baseUrl + profilePicId;
-                        } else {
-                            if (userGender.toUpperCase() === 'P' || userGender.toLowerCase() === 'female') {
-                                profileImg.src = baseUrl + defaultFemaleId;
-                            } else {
-                                profileImg.src = baseUrl + defaultMaleId;
-                            }
-                        }
-
-                        profileImg.onerror = function() {
-                            if (userGender.toUpperCase() === 'P' || userGender.toLowerCase() === 'female') {
-                                profileImg.src = baseUrl + defaultFemaleId;
-                            } else {
-                                profileImg.src = baseUrl + defaultMaleId;
-                            }
-                            profileImg.onerror = null; 
-                        };
-
-                        loadAchievements(userName);
-                        loadPoints(userName);
-
-                        try {
-                            const priceRes = await fetch('./membership/Plan_Price.txt');
-                            if (priceRes.ok) {
-                                const priceText = await priceRes.text();
-                                const lines = priceText.split('\n');
-                                let matchedPrice = "Price not found";
-
-                                for (let line of lines) {
-                                    if (!line.trim()) continue;
-                                    const parts = line.split('|');
-                                    if (parts.length === 2 && parts[0].trim() === userPlan) {
-                                        matchedPrice = parts[1].trim();
-                                        break;
-                                    }
-                                }
-                                document.getElementById('plan-price').textContent = matchedPrice;
-                            } else {
-                                document.getElementById('plan-price').textContent = "RM 10 / month"; 
-                            }
-                        } catch (error) {
-                            document.getElementById('plan-price').textContent = "RM 10 / month";
-                        }
-
-                        try {
-                            const planDetailsRes = await fetch(`./membership/${userPlan}.txt`);
-                            if (planDetailsRes.ok) {
-                                const planData = await planDetailsRes.text();
-                                parsePlanFeatures(planData);
-                            } else {
-                                document.getElementById('plan-includes').innerHTML = '<li>Error: Plan details not found.</li>';
-                            }
-                        } catch (error) {
-                            document.getElementById('plan-includes').innerHTML = '<li>Error loading plan details.</li>';
-                        }
-                    } else {
-                        console.error("Could not find the 'Name' header row in the Google Sheet.");
-                    }
-                } catch (err) {
-                    console.error("Error processing sheet data:", err);
-                }
-            },
-            error: function(err) {
-                console.error("PapaParse failed to fetch CSV:", err);
+        try {
+            const response = await fetch(`${API_URL}?action=getUserData&email=${encodeURIComponent(loggedInEmail)}`);
+            const data = await response.json();
+            
+            if (!data.success) {
+                console.error("Auth failed:", data.error);
+                localStorage.removeItem('loggedInEmail');
+                window.location.href = "login.html";
+                return;
             }
-        });
+
+            // 1. POPULATE PROFILE
+            const profile = data.profile;
+            document.getElementById('user-name').textContent = profile.name;
+            document.getElementById('top-acti-role').textContent = profile.actiRole.split(',')[0].trim() ? `- ${profile.actiRole.split(',')[0].trim()}` : '';
+            document.getElementById('top-asti-role').textContent = profile.astiRole.split(',')[0].trim() ? `- ${profile.astiRole.split(',')[0].trim()}` : '';
+            document.getElementById('link-member-status').textContent = profile.plan;
+            document.getElementById('user-email').textContent = profile.emails ? profile.emails.split(',').map(e => e.trim()).join(', ') : 'No email';
+            document.getElementById('user-phone').textContent = profile.phone;
+            document.getElementById('plan-name').textContent = profile.plan;
+            populateRoles(profile.actiRole, 'acti-roles');
+            populateRoles(profile.astiRole, 'asti-roles');
+
+            const profileImg = document.getElementById('user-profile-pic');
+            const baseUrl = "https://lh3.googleusercontent.com/d/";
+            const defPic = (profile.gender.toUpperCase() === 'P' || profile.gender.toLowerCase() === 'female') ? '1YAXVj4nkU75hiV5U0ewPmoU3qErDMB4-' : '1rpQ4Zy42TvwZLiy3oplSDvtVeGgDgzKM';
+            profileImg.src = profile.profilePicId && profile.profilePicId !== '-' ? baseUrl + profile.profilePicId : baseUrl + defPic;
+            profileImg.onerror = () => { profileImg.src = baseUrl + defPic; profileImg.onerror = null; };
+
+            // 2. POPULATE ACHIEVEMENTS
+            const achContainer = document.getElementById('achievement-container');
+            achContainer.innerHTML = '';
+            if (data.achievements.length === 0) {
+                achContainer.innerHTML = '<p class="no-record">No Record Found!</p>';
+            } else {
+                data.achievements.forEach(ach => {
+                    if(ach.fileId) {
+                        achContainer.innerHTML += `
+                            <div class="achievement-card">
+                                <iframe class="achievement-iframe" src="https://drive.google.com/file/d/${ach.fileId}/preview"></iframe>
+                                <a class="achievement-download" href="https://drive.google.com/uc?export=download&id=${ach.fileId}" target="_blank">Click to download</a>
+                                <p class="achievement-name">${ach.name}</p>
+                            </div>`;
+                    }
+                });
+            }
+
+            // 3. POPULATE POINTS
+            const ptsContainer = document.getElementById('points-history-container');
+            const totalDisplay = document.getElementById('total-points-display');
+            const noMsg = document.getElementById('no-points-msg');
+            
+            ptsContainer.innerHTML = '';
+            if (data.points.length === 0) {
+                totalDisplay.textContent = "Total points accumulated: 0 pts";
+                totalDisplay.classList.remove('negative');
+                noMsg.style.display = 'block';
+            } else {
+                noMsg.style.display = 'none';
+                let totalPts = 0;
+                
+                data.points.reverse().forEach(pt => {
+                    const parsed = parseFloat(pt.points.replace(/[^0-9.-]+/g,"")) || 0;
+                    totalPts += parsed;
+                    
+                    let typeClass = parsed > 0 ? 'point-earn' : (parsed < 0 ? 'point-deduct' : 'point-neutral');
+                    let displayPts = parsed > 0 ? `+${parsed} pts` : `${parsed} pts`;
+                    
+                    let linkHtml = (pt.receipt && pt.receipt !== '-') 
+                        ? (pt.receipt.startsWith('http') ? pt.receipt : `https://drive.google.com/file/d/${pt.receipt}/view`)
+                        : null;
+
+                    let cardStr = `<${linkHtml ? `a href="${linkHtml}" target="_blank"` : 'div'} class="point-card ${linkHtml ? 'clickable' : ''}">
+                                    <div class="point-row-1 ${typeClass}"><span>${pt.item}</span><span>${displayPts}</span></div>
+                                    ${pt.date ? `<div class="point-date">Date: ${pt.date}</div>` : ''}
+                                    ${pt.payment ? `<div class="point-payment">Payment method: ${pt.payment}</div>` : ''}
+                                  </${linkHtml ? 'a' : 'div'}>`;
+                    ptsContainer.innerHTML += cardStr;
+                });
+                
+                totalDisplay.textContent = `Total points accumulated: ${totalPts} pts`;
+                if (totalPts < 0) totalDisplay.classList.add('negative');
+                else totalDisplay.classList.remove('negative');
+            }
+
+            // 4. FETCH PLAN FILES
+            try {
+                const priceRes = await fetch('./membership/Plan_Price.txt');
+                if (priceRes.ok) {
+                    const priceText = await priceRes.text();
+                    let matchedPrice = "Price not found";
+                    priceText.split('\n').forEach(line => {
+                        const parts = line.split('|');
+                        if (parts.length === 2 && parts[0].trim() === profile.plan) matchedPrice = parts[1].trim();
+                    });
+                    document.getElementById('plan-price').textContent = matchedPrice;
+                } else document.getElementById('plan-price').textContent = "RM 10 / month";
+            } catch(e) { document.getElementById('plan-price').textContent = "RM 10 / month"; }
+
+            try {
+                const planDetailsRes = await fetch(`./membership/${profile.plan}.txt`);
+                if (planDetailsRes.ok) {
+                    const planData = await planDetailsRes.text();
+                    parsePlanFeatures(planData);
+                } else document.getElementById('plan-includes').innerHTML = '<li>Error: Plan details not found.</li>';
+            } catch(e) { document.getElementById('plan-includes').innerHTML = '<li>Error loading plan details.</li>'; }
+
+        } catch (error) {
+            console.error("Dashboard error:", error);
+        }
     }
 
     loadDashboardData();
