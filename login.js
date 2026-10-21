@@ -1,74 +1,45 @@
+const API_URL = "https://script.google.com/macros/s/AKfycbzw2o9EId0F0SgBNJtTQCP9qQ_x956ZLc9KT326F6WBPq2-rHGgeMKCH1SOEz0KlHwv/exec";
+
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // --- 0. REDIRECT IF ALREADY LOGGED IN ---
     const existingLogin = localStorage.getItem('loggedInEmail');
     if (existingLogin) {
         window.location.href = "https://sites.google.com/view/5titanium2024/member-dashboard";
         return; 
     }
 
-    let currentUser = null;
     let loggedInEmailString = ""; 
 
-    // Navbar Scroll Logic for Login Page
+    // Navbar & Mobile Logic
     const topMenu = document.getElementById('top-menu');
     window.addEventListener('scroll', () => {
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        if (scrollTop > 10) {
-            topMenu.classList.add('scrolled');
-        } else {
-            topMenu.classList.remove('scrolled');
-        }
+        if ((window.pageYOffset || document.documentElement.scrollTop) > 10) topMenu.classList.add('scrolled');
+        else topMenu.classList.remove('scrolled');
     });
 
-    // --- MOBILE DRAWER LOGIC FOR LOGIN PAGE ---
     const hamburgerBtn = document.getElementById('hamburger-btn');
     const closeDrawerBtn = document.getElementById('close-drawer-btn');
     const mobileDrawer = document.getElementById('mobile-drawer');
     const drawerOverlay = document.getElementById('drawer-overlay');
 
     if(hamburgerBtn) {
-        hamburgerBtn.addEventListener('click', () => {
-            mobileDrawer.classList.add('open');
-            drawerOverlay.style.display = 'block';
-        });
-
-        closeDrawerBtn.addEventListener('click', () => {
-            mobileDrawer.classList.remove('open');
-            drawerOverlay.style.display = 'none';
-        });
-
-        drawerOverlay.addEventListener('click', () => {
-            mobileDrawer.classList.remove('open');
-            drawerOverlay.style.display = 'none';
-        });
+        hamburgerBtn.addEventListener('click', () => { mobileDrawer.classList.add('open'); drawerOverlay.style.display = 'block'; });
+        closeDrawerBtn.addEventListener('click', () => { mobileDrawer.classList.remove('open'); drawerOverlay.style.display = 'none'; });
+        drawerOverlay.addEventListener('click', () => { mobileDrawer.classList.remove('open'); drawerOverlay.style.display = 'none'; });
     }
 
-    const sheetId = '11fZl1_k9Txz6zXZqZnZuKcH5PtF6QQuY';
-    const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
-
-    // --- ENTER KEY LOGIC ---
+    // Enter Key Logic
     document.getElementById('email-input').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            document.getElementById('next-btn').click();
-        }
+        if (e.key === 'Enter') { e.preventDefault(); document.getElementById('next-btn').click(); }
     });
-
     document.getElementById('password-input').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            document.getElementById('signin-btn').click();
-        }
+        if (e.key === 'Enter') { e.preventDefault(); document.getElementById('signin-btn').click(); }
     });
-
-    // --- CLEAR ERROR ON RETYPE ---
     document.getElementById('password-input').addEventListener('input', function() {
         document.getElementById('password-error').textContent = "";
     });
 
-    // --- STEP 1: Verify Email ---
-    document.getElementById('next-btn').addEventListener('click', () => {
+    // STEP 1: VERIFY EMAIL SECURELY
+    document.getElementById('next-btn').addEventListener('click', async () => {
         const emailInput = document.getElementById('email-input').value.trim();
         const errorMsg = document.getElementById('email-error');
         const nextBtn = document.getElementById('next-btn');
@@ -82,73 +53,30 @@ document.addEventListener('DOMContentLoaded', () => {
         errorMsg.textContent = "Checking records, please wait...";
         nextBtn.disabled = true;
 
-        Papa.parse(csvUrl, {
-            download: true,
-            header: false,
-            complete: function(results) {
-                nextBtn.disabled = false;
+        try {
+            const response = await fetch(`${API_URL}?action=checkEmail&email=${encodeURIComponent(emailInput)}`);
+            const data = await response.json();
+            
+            nextBtn.disabled = false;
+            if (!data.success) {
                 errorMsg.style.color = "#d93025"; 
-                
-                try {
-                    const data = results.data;
-                    
-                    const headerRowIndex = data.findIndex(row => 
-                        row[0] && row[0].toString().trim().toLowerCase() === 'name'
-                    );
-                    
-                    if (headerRowIndex === -1) {
-                        errorMsg.textContent = "Database error: Cannot find sheet headers.";
-                        return;
-                    }
-
-                    const headers = data[headerRowIndex].map(h => h ? h.trim() : '');
-                    
-                    const usersData = data.slice(headerRowIndex + 1).map(row => {
-                        let userObj = {};
-                        headers.forEach((headerName, index) => {
-                            userObj[headerName] = row[index] ? row[index].trim() : '';
-                        });
-                        return userObj;
-                    });
-
-                    currentUser = usersData.find(u => {
-                        const emailKey = Object.keys(u).find(k => k.toLowerCase() === 'email');
-                        if (!emailKey || !u[emailKey]) return false;
-                        
-                        const emailList = u[emailKey].split(',').map(e => e.trim().toLowerCase());
-                        return emailList.includes(emailInput.toLowerCase());
-                    });
-
-                    if (!currentUser) {
-                        errorMsg.textContent = "Email not found in our records.";
-                        return;
-                    }
-
-                    loggedInEmailString = emailInput; 
-                    errorMsg.textContent = "";
-                    
-                    // Fetch Name from Sheet
-                    const nameKey = Object.keys(currentUser).find(k => k.toLowerCase() === 'name');
-                    const displayUserName = nameKey && currentUser[nameKey] ? currentUser[nameKey] : loggedInEmailString;
-
-                    document.getElementById('step-email').style.display = 'none';
-                    document.getElementById('step-password').style.display = 'block';
-                    document.getElementById('display-name').textContent = displayUserName;
-                    
-                } catch (err) {
-                    console.error(err);
-                    errorMsg.textContent = "Error processing data.";
-                }
-            },
-            error: function() {
-                nextBtn.disabled = false;
-                errorMsg.style.color = "#d93025";
-                errorMsg.textContent = "Network error. Please check your internet connection.";
+                errorMsg.textContent = data.error || "Email not found in our records.";
+                return;
             }
-        });
+
+            loggedInEmailString = emailInput; 
+            errorMsg.textContent = "";
+            document.getElementById('step-email').style.display = 'none';
+            document.getElementById('step-password').style.display = 'block';
+            document.getElementById('display-name').textContent = data.name;
+
+        } catch (err) {
+            nextBtn.disabled = false;
+            errorMsg.style.color = "#d93025";
+            errorMsg.textContent = "Network error. Please try again.";
+        }
     });
 
-    // --- GO BACK: Change Email ---
     document.getElementById('change-email').addEventListener('click', (e) => {
         e.preventDefault();
         document.getElementById('step-password').style.display = 'none';
@@ -157,20 +85,14 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('password-error').textContent = "";
     });
 
-    // --- PASSWORD VISIBILITY TOGGLE ---
     document.getElementById('toggle-password').addEventListener('click', function() {
         const pwdInput = document.getElementById('password-input');
-        if (pwdInput.type === 'password') {
-            pwdInput.type = 'text';
-            this.textContent = 'hide';
-        } else {
-            pwdInput.type = 'password';
-            this.textContent = 'show';
-        }
+        if (pwdInput.type === 'password') { pwdInput.type = 'text'; this.textContent = 'hide'; } 
+        else { pwdInput.type = 'password'; this.textContent = 'show'; }
     });
 
-    // --- STEP 2: Verify Password and Login ---
-    document.getElementById('signin-btn').addEventListener('click', () => {
+    // STEP 2: VERIFY PASSWORD SECURELY
+    document.getElementById('signin-btn').addEventListener('click', async () => {
         const pwdInput = document.getElementById('password-input').value;
         const errorMsg = document.getElementById('password-error');
         const signinBtn = document.getElementById('signin-btn');
@@ -179,22 +101,26 @@ document.addEventListener('DOMContentLoaded', () => {
         errorMsg.textContent = "Verifying password, please wait...";
         signinBtn.disabled = true;
 
-        setTimeout(() => {
+        try {
+            const response = await fetch(`${API_URL}?action=login&email=${encodeURIComponent(loggedInEmailString)}&password=${encodeURIComponent(pwdInput)}`);
+            const data = await response.json();
+
+            setTimeout(() => {
+                signinBtn.disabled = false;
+                if (!data.success) {
+                    errorMsg.style.color = "#d93025"; 
+                    errorMsg.textContent = data.error || "Password incorrect";
+                    return;
+                }
+                errorMsg.textContent = "";
+                localStorage.setItem('loggedInEmail', loggedInEmailString);
+                window.location.href = "https://sites.google.com/view/5titanium2024/member-dashboard";
+            }, 1000); 
+
+        } catch (err) {
             signinBtn.disabled = false;
-            
-            const pwdKey = Object.keys(currentUser).find(k => k.toLowerCase() === 'password');
-            const actualPassword = pwdKey ? currentUser[pwdKey] : '';
-
-            if (pwdInput !== actualPassword) {
-                errorMsg.style.color = "#d93025"; 
-                errorMsg.textContent = "Password incorrect";
-                return;
-            }
-
-            errorMsg.textContent = "";
-            localStorage.setItem('loggedInEmail', loggedInEmailString);
-            window.location.href = "https://sites.google.com/view/5titanium2024/member-dashboard";
-            
-        }, 1000); 
+            errorMsg.style.color = "#d93025";
+            errorMsg.textContent = "Network error. Please try again.";
+        }
     });
 });
