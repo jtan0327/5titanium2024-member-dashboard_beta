@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('top-asti-role').textContent = profile.astiRole.split(',')[0].trim() ? `- ${profile.astiRole.split(',')[0].trim()}` : '';
             document.getElementById('link-member-status').textContent = profile.plan;
             document.getElementById('user-email').textContent = profile.emails ? profile.emails.split(',').map(e => e.trim()).join(', ') : 'No email';
-            document.getElementById('user-phone').textContent = profile.phone;
+            document.getElementById('user-phone').textContent = profile.phone || 'N/A';
             document.getElementById('plan-name').textContent = profile.plan;
             populateRoles(profile.actiRole, 'acti-roles');
             populateRoles(profile.astiRole, 'asti-roles');
