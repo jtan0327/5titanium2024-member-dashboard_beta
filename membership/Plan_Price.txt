@@ -1,8 +1,8 @@
 Plan|Price
-Premium|RM 15 month
+Premium|RM 15 / month
 Premium (Legacy Pro)|RM 10 / month
 Premium (Legacy)|RM 8 / month
-Pro|10 / month
+Pro|RM 10 / month
 Gold|RM 8 / month
 Silver|RM 5 / Month
 Basic|FOC
