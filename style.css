@@ -20,7 +20,8 @@ body {
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
-    padding: 15px 30px; 
+    padding: 0 30px; 
+    height: 50px; 
     position: fixed; 
     top: 0; 
     left: 0; 
@@ -52,6 +53,7 @@ body {
     font-size: 19px; 
     font-family: 'ZCOOL KuaiLe', cursive, sans-serif !important; 
     color: #ffffff !important; 
+    white-space: nowrap; 
 }
 
 #top-menu .nav-links { 
@@ -59,6 +61,7 @@ body {
     list-style: none; 
     gap: 15px; 
     align-items: center; 
+    flex-wrap: nowrap; 
 }
 
 #top-menu a { 
@@ -67,6 +70,7 @@ body {
     padding: 5px 8px; 
     font-size: 17px; 
     transition: background-color 0.3s ease;
+    white-space: nowrap; 
 }
 
 #top-menu a.active { 
@@ -605,7 +609,7 @@ footer {
     position: fixed;
     z-index: 2000;
     top: 0;
-    left: -250px; /* Hidden off-screen */
+    left: -250px; 
     background-color: #1a1a1a;
     overflow-x: hidden;
     transition: 0.3s ease;
@@ -667,7 +671,7 @@ footer {
         display: block !important;
     }
     #top-menu {
-        padding: 15px 15px; 
+        padding: 0 15px; 
     }
 }
 
@@ -683,7 +687,7 @@ footer {
 
     #top-menu {
         justify-content: flex-start;
-        padding: 15px 20px;
+        padding: 0 20px;
     }
 
     .logo-container {
