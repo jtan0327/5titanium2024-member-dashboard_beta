@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 0. REDIRECT IF ALREADY LOGGED IN ---
     const existingLogin = localStorage.getItem('loggedInEmail');
     if (existingLogin) {
-        // User is already logged in, send them straight to the dashboard!
         window.location.href = "https://sites.google.com/view/5titanium2024/member-dashboard";
         return; 
     }
@@ -25,6 +24,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const sheetId = '11fZl1_k9Txz6zXZqZnZuKcH5PtF6QQuY';
     const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
 
+    // --- ENTER KEY LOGIC ---
+    document.getElementById('email-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            document.getElementById('next-btn').click();
+        }
+    });
+
+    document.getElementById('password-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            document.getElementById('signin-btn').click();
+        }
+    });
+
     // --- STEP 1: Verify Email ---
     document.getElementById('next-btn').addEventListener('click', () => {
         const emailInput = document.getElementById('email-input').value.trim();
@@ -36,23 +50,20 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Show a loading state to prevent internet connection race conditions
         errorMsg.style.color = "#333";
         errorMsg.textContent = "Checking records, please wait...";
         nextBtn.disabled = true;
 
-        // Fetch data ONLY when they click Next to ensure it's fully loaded
         Papa.parse(csvUrl, {
             download: true,
             header: false,
             complete: function(results) {
                 nextBtn.disabled = false;
-                errorMsg.style.color = "#d93025"; // Reset error text to red
+                errorMsg.style.color = "#d93025"; 
                 
                 try {
                     const data = results.data;
                     
-                    // Bulletproof Header Finding
                     const headerRowIndex = data.findIndex(row => 
                         row[0] && row[0].toString().trim().toLowerCase() === 'name'
                     );
@@ -72,9 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         return userObj;
                     });
 
-                    // Search for user by checking if the typed email exists within the comma-separated list
                     currentUser = usersData.find(u => {
-                        // Find the column named 'email' regardless of capitalization
                         const emailKey = Object.keys(u).find(k => k.toLowerCase() === 'email');
                         if (!emailKey || !u[emailKey]) return false;
                         
@@ -87,12 +96,16 @@ document.addEventListener('DOMContentLoaded', () => {
                         return;
                     }
 
-                    // Email found: Hide Step 1, Show Step 2
                     loggedInEmailString = emailInput; 
                     errorMsg.textContent = "";
+                    
+                    // Fetch Name from Sheet
+                    const nameKey = Object.keys(currentUser).find(k => k.toLowerCase() === 'name');
+                    const displayUserName = nameKey && currentUser[nameKey] ? currentUser[nameKey] : loggedInEmailString;
+
                     document.getElementById('step-email').style.display = 'none';
                     document.getElementById('step-password').style.display = 'block';
-                    document.getElementById('display-email').textContent = loggedInEmailString;
+                    document.getElementById('display-name').textContent = displayUserName;
                     
                 } catch (err) {
                     console.error(err);
@@ -133,7 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const pwdInput = document.getElementById('password-input').value;
         const errorMsg = document.getElementById('password-error');
         
-        // Find the password column regardless of capitalization in the sheet
         const pwdKey = Object.keys(currentUser).find(k => k.toLowerCase() === 'password');
         const actualPassword = pwdKey ? currentUser[pwdKey] : '';
 
@@ -142,7 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // SUCCESS! Save email and redirect
         localStorage.setItem('loggedInEmail', loggedInEmailString);
         window.location.href = "https://sites.google.com/view/5titanium2024/member-dashboard";
     });
