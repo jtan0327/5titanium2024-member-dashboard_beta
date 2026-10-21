@@ -18,6 +18,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // --- 1.5 MOBILE DRAWER LOGIC ---
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const closeDrawerBtn = document.getElementById('close-drawer-btn');
+    const mobileDrawer = document.getElementById('mobile-drawer');
+    const drawerOverlay = document.getElementById('drawer-overlay');
+
+    if(hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', () => {
+            mobileDrawer.classList.add('open');
+            drawerOverlay.style.display = 'block';
+        });
+
+        closeDrawerBtn.addEventListener('click', () => {
+            mobileDrawer.classList.remove('open');
+            drawerOverlay.style.display = 'none';
+        });
+
+        drawerOverlay.addEventListener('click', () => {
+            mobileDrawer.classList.remove('open');
+            drawerOverlay.style.display = 'none';
+        });
+    }
+
     // --- 2. NAVIGATION LOGIC (Tabs) ---
     const menuProfile = document.getElementById('menu-profile');
     const menuAchievement = document.getElementById('menu-achievement');
@@ -257,13 +280,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                 displayPts = `${parsedPoints} pts`; 
                             }
 
-                            // --- FIXED RECEIPT LINK LOGIC ---
                             let card;
-                            // Check if receiptLink exists and is not just a dash
                             if (receiptLink && receiptLink !== '-' && receiptLink !== '') {
                                 card = document.createElement('a');
                                 
-                                // If it already happens to be a full link, use it. Otherwise, assume it's a Drive ID.
                                 if (receiptLink.startsWith('http')) {
                                     card.href = receiptLink;
                                 } else {
