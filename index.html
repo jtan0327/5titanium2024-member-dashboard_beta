@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>5 Titanium 2024 - Member Dashboard</title>
     
-    <!-- Website Favicon -->
     <link rel="icon" href="5TI 2024 LO.png" type="image/png">
     
-    <!-- Comic Neue (for mobile) and ZCOOL KuaiLe (for Chinese) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
@@ -19,7 +17,6 @@
 <body>
     <!-- Top Menu -->
     <nav id="top-menu">
-        <!-- Mobile Icons (Hidden on Desktop) -->
         <div class="mobile-icon" id="hamburger-btn">
             <i class="fa-solid fa-bars"></i>
         </div>
@@ -33,7 +30,7 @@
             <i class="fa-solid fa-magnifying-glass"></i>
         </div>
 
-        <!-- Desktop Links -->
+        <!-- Navigation Links -->
         <ul class="nav-links" id="desktop-nav">
             <li><a href="https://sites.google.com/view/5titanium2024/member-dashboard">Member Dashboard</a></li>
             <li><a href="https://sites.google.com/view/5titanium24/home">Home</a></li>
@@ -41,14 +38,18 @@
             <li><a href="https://sites.google.com/view/5titanium2024/asti">ASTI</a></li>
             <li><a href="https://sites.google.com/view/5titanium2024/5%E9%92%9B%E9%A2%91%E9%81%93">5钛频道</a></li>
             
-            <!-- 'More' Dropdown (Always visible now) -->
+            <!-- These 3 items are ONLY visible on Fullscreen Desktop -->
+            <li class="desktop-only-link"><a href="https://sites.google.com/view/5titanium2024/%E5%92%8C%E4%B8%AD%E5%BF%AB%E6%8A%A5">和中快报</a></li>
+            <li class="desktop-only-link"><a href="https://sites.google.com/view/5titanium2024/shop">Shop</a></li>
+            <li class="desktop-only-link"><a href="#" class="active">Profile</a></li>
+
+            <!-- 'More' Dropdown (Visible ONLY when collapsed) -->
             <li class="nav-dropdown" id="more-dropdown">
                 <a href="#" class="dropbtn">More <i class="fa-solid fa-chevron-down" style="font-size: 12px;"></i></a>
                 <div class="dropdown-content">
                     <a href="https://sites.google.com/view/5titanium2024/%E5%92%8C%E4%B8%AD%E5%BF%AB%E6%8A%A5">和中快报</a>
                     <a href="https://sites.google.com/view/5titanium2024/shop">Shop</a>
-                    <!-- Profile is now inside the dropdown -->
-                    <a href="#" class="active" id="nav-profile">Profile</a>
+                    <a href="#" class="active">Profile</a>
                 </div>
             </li>
         </ul>
@@ -72,13 +73,9 @@
     </div>
     <div id="drawer-overlay"></div>
 
-    <!-- Scrolling Banner -->
     <header id="banner"></header>
 
-    <!-- Main Dashboard Layout -->
     <div class="dashboard-container">
-        
-        <!-- Sidebar Navigation -->
         <aside id="sidebar">
             <ul id="sidebar-menu">
                 <li><a href="#" id="menu-profile" class="active">Profile</a></li>
@@ -89,10 +86,7 @@
             </ul>
         </aside>
 
-        <!-- Dynamic Content Area -->
         <main id="content">
-            
-            <!-- Profile Section -->
             <section id="section-profile">
                 <div class="profile-header">
                     <img id="user-profile-pic" src="" alt="Profile Picture" />
@@ -122,24 +116,20 @@
                 </div>
             </section>
 
-            <!-- Achievement Section -->
             <section id="section-achievement" style="display: none;">
                 <div id="achievement-container">
                     <p>Loading achievements...</p>
                 </div>
             </section>
 
-            <!-- Points Section -->
             <section id="section-points" style="display: none;">
                 <h2 class="points-total" id="total-points-display">Total points accumulated: Loading...</h2>
                 <p id="no-points-msg" class="no-points-history" style="display: none;">No Points History</p>
                 
                 <div id="points-history-container" class="points-history-container">
-                    <!-- Points cards will be injected here via JavaScript -->
                 </div>
             </section>
 
-            <!-- Member Status Section -->
             <section id="section-status" style="display: none;">
                 <h2>Your current plan: <span id="plan-name">Premium (Legacy)</span></h2>
                 <p class="monthly-charge">Monthly charge: <span id="plan-price">Loading...</span></p>
@@ -153,7 +143,6 @@
                 
                 <img src="assets/membership_image.jpg" alt="Membership Image" id="membership-image" onerror="this.style.display='none'">
             </section>
-
         </main>
     </div>
     
