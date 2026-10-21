@@ -73,9 +73,13 @@ body {
     border-radius: 4px; 
 }
 
-/* Banner Update */
+/* Banner Update (Now uses the updated file name with underscore) */
 #banner { 
-    background-color: #4a86e8; 
+    background-image: url('banner_5.0.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #4a86e8; /* Fallback color while image loads */
     height: 250px; 
     display: flex; 
     align-items: center; 
