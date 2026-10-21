@@ -3,7 +3,6 @@
     box-sizing: border-box; 
     margin: 0; 
     padding: 0; 
-    /* Comic Neue added for mobile support */
     font-family: 'Comic Neue', 'Comic Sans MS', 'Comic Sans', 'ZCOOL KuaiLe', cursive, sans-serif; 
     line-height: 1.25; 
 }
@@ -16,7 +15,7 @@ body {
     min-height: 100vh; 
 }
 
-/* Top Navigation (With Black/White Scroll Fix) */
+/* Top Navigation */
 #top-menu { 
     display: flex; 
     justify-content: space-between; 
@@ -50,7 +49,7 @@ body {
 
 #top-menu .logo-text { 
     font-weight: bold; 
-    font-size: 19px; /* +1px */
+    font-size: 19px; 
     font-family: 'ZCOOL KuaiLe', cursive, sans-serif !important; 
     color: #ffffff !important; 
 }
@@ -66,7 +65,7 @@ body {
     text-decoration: none; 
     color: #ffffff !important; 
     padding: 5px 8px; 
-    font-size: 17px; /* +1px */
+    font-size: 17px; 
     transition: background-color 0.3s ease;
 }
 
@@ -122,7 +121,7 @@ body {
     color: #333; 
     display: block; 
     padding: 10px 15px; 
-    font-size: 17px; /* +1px */
+    font-size: 17px; 
     border-radius: 4px; 
 }
 
@@ -171,13 +170,13 @@ body {
 }
 
 .name-display { 
-    font-size: 21px; /* +1px */
+    font-size: 21px; 
     font-weight: bold; 
     margin-bottom: 5px; 
 }
 
 .top-role { 
-    font-size: 17px; /* +1px */
+    font-size: 17px; 
     margin-bottom: 3px; 
 }
 
@@ -186,7 +185,7 @@ body {
 }
 
 .contact-info p { 
-    font-size: 15px; /* +1px */
+    font-size: 15px; 
     margin-bottom: 5px; 
 }
 
@@ -202,18 +201,18 @@ body {
 }
 
 .roles-container h3 { 
-    font-size: 17px; /* +1px */
+    font-size: 17px; 
     margin-bottom: 10px; 
 }
 
 .role-title { 
     font-weight: bold; 
-    font-size: 15px; /* +1px */
+    font-size: 15px; 
     margin-top: 15px; 
 }
 
 .role-list { 
-    font-size: 15px; /* +1px */
+    font-size: 15px; 
     list-style-type: none; 
     padding-left: 0; 
     margin-top: 5px; 
@@ -243,7 +242,7 @@ body {
 }
 
 .achievement-download {
-    font-size: 15px; /* +1px */
+    font-size: 15px; 
     color: #4a86e8;
     text-decoration: none;
     display: block;
@@ -255,14 +254,14 @@ body {
 }
 
 .achievement-name {
-    font-size: 15px; /* +1px */
+    font-size: 15px; 
     font-weight: bold;
     color: #333;
 }
 
 .no-record {
     color: #F65353; 
-    font-size: 17px; /* +1px */
+    font-size: 17px; 
     font-weight: bold;
     margin-top: 10px;
 }
@@ -273,7 +272,7 @@ body {
 }
 
 .points-total {
-    font-size: 21px; /* +1px */
+    font-size: 21px; 
     font-weight: bold;
     margin-bottom: 5px;
     color: #333;
@@ -285,7 +284,7 @@ body {
 
 .no-points-history {
     color: #FF0202;
-    font-size: 16px; /* +1px */
+    font-size: 16px; 
     margin-bottom: 15px;
 }
 
@@ -328,7 +327,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 8px;
-    font-size: 16px; /* +1px */
+    font-size: 16px; 
     font-weight: bold;
 }
 
@@ -337,35 +336,35 @@ body {
 .point-neutral { color: #007AFF; }
 
 .point-date {
-    font-size: 13px; /* +1px */
+    font-size: 13px; 
     color: #007AFF;
     margin-bottom: 6px;
 }
 
 .point-payment {
-    font-size: 13px; /* +1px */
+    font-size: 13px; 
     color: #03468F;
 }
 
 /* Member Status Section */
 #section-status h2 { 
-    font-size: 21px; /* Custom 21px hierarchy applied */
+    font-size: 21px; 
     margin-bottom: 5px; 
 }
 
 .monthly-charge { 
-    font-size: 17px; /* Custom 17px hierarchy applied */
+    font-size: 17px; 
     color: #555; 
     margin-bottom: 20px; 
 }
 
 .plan-details h3 { 
-    font-size: 15px; /* Custom 15px hierarchy applied */
+    font-size: 15px; 
     margin-bottom: 10px; 
 }
 
 .plan-list { 
-    font-size: 15px; /* Custom 15px hierarchy applied */
+    font-size: 15px; 
     list-style: none; 
     line-height: 1.8; 
 }
@@ -378,7 +377,7 @@ body {
 }
 
 .contact-admin { 
-    font-size: 13px; /* +1px */
+    font-size: 13px; 
     color: #d93025; 
     margin-top: 30px; 
 }
@@ -416,7 +415,7 @@ footer {
     color: #fff; 
     border-radius: 50%; 
     text-decoration: none; 
-    font-size: 19px; /* +1px */
+    font-size: 19px; 
     transition: background-color 0.3s ease; 
 }
 
@@ -425,7 +424,7 @@ footer {
 .social-icons a:hover { opacity: 0.8; }
 
 .copyright-text p { 
-    font-size: 10px; /* +1px */
+    font-size: 10px; 
     line-height: 1.4; 
     margin: 2px 0; 
     font-weight: bold; 
@@ -473,7 +472,7 @@ footer {
 
 .login-card h2 { 
     margin-bottom: 25px; 
-    font-size: 25px; /* +1px */
+    font-size: 25px; 
 }
 
 .login-card input { 
@@ -482,7 +481,7 @@ footer {
     background: #ffffff;
     border: 1px solid #ccc; 
     border-radius: 4px; 
-    font-size: 17px; /* +1px */
+    font-size: 17px; 
 }
 
 .login-card input:focus { 
@@ -497,7 +496,7 @@ footer {
     border: none; 
     border-radius: 4px; 
     font-weight: bold; 
-    font-size: 17px; /* +1px */
+    font-size: 17px; 
     cursor: pointer; 
     margin-top: 5px; 
     transition: background-color 0.2s; 
@@ -509,7 +508,7 @@ footer {
 
 .error-msg { 
     color: #d93025; 
-    font-size: 13px; /* +1px */
+    font-size: 13px; 
     min-height: 18px; 
     margin: 8px 0; 
     text-align: left; 
@@ -517,7 +516,7 @@ footer {
 }
 
 .welcome-text { 
-    font-size: 15px; /* +1px */
+    font-size: 15px; 
     margin-bottom: 25px; 
 }
 
@@ -538,19 +537,165 @@ footer {
     position: absolute; 
     right: 15px; 
     cursor: pointer; 
-    font-size: 15px; /* +1px */
+    font-size: 15px; 
     color: #555; 
     font-weight: bold; 
 }
 
 .protection-text { 
     margin-top: 30px; 
-    font-size: 12px; /* +1px */
+    font-size: 12px; 
     color: #333; 
     font-weight: bold;
 }
 
-/* Responsive / Mobile View */
+/* ========================================= */
+/* --- RESPONSIVE NAVIGATION STYLES --- */
+/* ========================================= */
+
+.mobile-icon {
+    display: none;
+    color: #ffffff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.search-mobile {
+    margin-left: auto; 
+}
+
+/* Base Dropdown Styles */
+.nav-dropdown {
+    display: none; 
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #1a1a1a;
+    min-width: 150px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+    z-index: 1001;
+    border-radius: 4px;
+    top: 100%;
+    right: 0;
+}
+
+.dropdown-content a {
+    color: white !important;
+    padding: 12px 16px !important;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #333;
+}
+
+.nav-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Mobile Side Drawer Styles */
+.drawer {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    left: -250px; /* Hidden off-screen */
+    background-color: #1a1a1a;
+    overflow-x: hidden;
+    transition: 0.3s ease;
+    padding-top: 20px;
+}
+
+.drawer.open {
+    left: 0;
+}
+
+.drawer-header {
+    padding: 10px 20px;
+    text-align: left;
+}
+
+#close-drawer-btn {
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.drawer-links {
+    list-style-type: none;
+    padding: 20px 0;
+}
+
+.drawer-links li a {
+    padding: 15px 25px;
+    text-decoration: none;
+    font-size: 17px;
+    color: white;
+    display: block;
+    transition: 0.2s;
+}
+
+.drawer-links li a:hover {
+    background-color: #333;
+}
+
+#drawer-overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1500;
+}
+
+/* TABLET VIEW (688px to 1050px) */
+@media screen and (max-width: 1050px) and (min-width: 688px) {
+    .desktop-only {
+        display: none !important;
+    }
+    .nav-dropdown {
+        display: block !important;
+    }
+    #top-menu {
+        padding: 15px 15px; 
+    }
+}
+
+/* MOBILE VIEW (Less than 688px) */
+@media screen and (max-width: 687px) {
+    #desktop-nav {
+        display: none !important; 
+    }
+    
+    .mobile-icon {
+        display: block !important; 
+    }
+
+    #top-menu {
+        justify-content: flex-start;
+        padding: 15px 20px;
+    }
+
+    .logo-container {
+        margin-left: 20px;
+    }
+
+    .search-mobile {
+        margin-left: auto;
+    }
+}
+
+/* Base Responsive adjustments for Sidebar */
 @media (max-width: 768px) {
     .dashboard-container { flex-direction: column; }
     #sidebar { width: 100%; border-right: none; border-bottom: 2px solid #eee; margin-bottom: 20px; padding-bottom: 10px; padding-right: 0; }
