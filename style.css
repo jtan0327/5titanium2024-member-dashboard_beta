@@ -570,11 +570,10 @@ footer {
 
 /* Base Dropdown Styles */
 .nav-dropdown {
-    display: none; 
     position: relative;
 }
 
-.dropdown-content {
+#top-menu .dropdown-content {
     display: none;
     position: absolute;
     background-color: #1a1a1a;
@@ -586,7 +585,7 @@ footer {
     right: 0;
 }
 
-.dropdown-content a {
+#top-menu .dropdown-content a {
     color: white !important;
     padding: 12px 16px !important;
     text-decoration: none;
@@ -594,11 +593,11 @@ footer {
     text-align: left;
 }
 
-.dropdown-content a:hover {
-    background-color: #333;
+#top-menu .dropdown-content a:hover {
+    background-color: #333 !important;
 }
 
-.nav-dropdown:hover .dropdown-content {
+#top-menu .nav-dropdown:hover .dropdown-content {
     display: block;
 }
 
@@ -664,12 +663,6 @@ footer {
 
 /* TABLET VIEW (688px to 1050px) */
 @media screen and (max-width: 1050px) and (min-width: 688px) {
-    .desktop-only {
-        display: none !important;
-    }
-    .nav-dropdown {
-        display: block !important;
-    }
     #top-menu {
         padding: 0 15px; 
     }
