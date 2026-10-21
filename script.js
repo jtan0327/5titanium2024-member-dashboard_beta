@@ -30,19 +30,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const secStatus = document.getElementById('section-status');
 
     function switchTab(tabName) {
-        // Hide all sections
         secProfile.style.display = 'none';
         secAchievement.style.display = 'none';
         secPoints.style.display = 'none';
         secStatus.style.display = 'none';
         
-        // Remove active class from all menu items
         menuProfile.classList.remove('active');
         menuAchievement.classList.remove('active');
         menuPoints.classList.remove('active');
         menuStatus.classList.remove('active');
 
-        // Show the target section and apply active class
         if (tabName === 'profile') {
             secProfile.style.display = 'block';
             menuProfile.classList.add('active');
@@ -191,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- NEW: FETCH POINTS SYSTEM ---
+    // --- FETCH POINTS SYSTEM ---
     function loadPoints(userName) {
         const pointsSheetId = '15J8DGFOXtyv9V1dTQgweMNJDyrHku8Fj';
         const pointsGid = '2093043020';
@@ -209,7 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     container.innerHTML = ''; 
                     
-                    // Locate Header Row
                     const headerRowIndex = data.findIndex(row => row.some(cell => cell && cell.toString().toLowerCase().includes('name')));
                     if (headerRowIndex === -1) {
                         totalDisplay.textContent = "Error: Database headers missing.";
@@ -218,7 +214,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     const headers = data[headerRowIndex].map(h => h ? h.trim().toLowerCase() : '');
                     
-                    // Identify specific columns using fuzzy matching just in case
                     const nameIdx = headers.findIndex(h => h.includes('name'));
                     const pointsIdx = headers.findIndex(h => h.includes('points_system') || h.includes('point'));
                     const dateIdx = headers.findIndex(h => h === 'date');
@@ -226,26 +221,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     const paymentIdx = headers.findIndex(h => h.includes('payment'));
                     const receiptIdx = headers.findIndex(h => h.includes('receipt'));
 
-                    // Filter records strictly for the matching user
                     const userRecords = data.slice(headerRowIndex + 1).filter(row => {
                         return row[nameIdx] && row[nameIdx].trim().toLowerCase() === userName.toLowerCase();
                     });
 
                     if (userRecords.length === 0) {
-                        // User has no points records
                         totalDisplay.textContent = "Total points accumulated: 0 pts";
                         totalDisplay.classList.remove('negative');
                         noMsg.style.display = 'block';
                     } else {
-                        // User has records
                         noMsg.style.display = 'none';
                         let totalPoints = 0;
                         
-                        // Reverse the array so the newest records (at the bottom of sheet) appear at the top
                         const sortedRecords = userRecords.reverse();
 
                         sortedRecords.forEach(row => {
-                            // Parse points as a number (strips out any letters/spaces accidentally typed in sheet)
                             const rawPoints = row[pointsIdx] ? row[pointsIdx].trim() : '0';
                             const parsedPoints = parseFloat(rawPoints.replace(/[^0-9.-]+/g,"")) || 0;
                             
@@ -256,23 +246,30 @@ document.addEventListener('DOMContentLoaded', () => {
                             const paymentText = (paymentIdx !== -1 && row[paymentIdx]) ? row[paymentIdx].trim() : '';
                             const receiptLink = (receiptIdx !== -1 && row[receiptIdx]) ? row[receiptIdx].trim() : '';
 
-                            // Determine Color Logic based on points
-                            let typeClass = 'point-neutral'; /* Default #007AFF */
+                            let typeClass = 'point-neutral'; 
                             let displayPts = `${parsedPoints} pts`;
                             
                             if (parsedPoints > 0) {
-                                typeClass = 'point-earn'; /* Green */
+                                typeClass = 'point-earn'; 
                                 displayPts = `+${parsedPoints} pts`;
                             } else if (parsedPoints < 0) {
-                                typeClass = 'point-deduct'; /* Red */
-                                displayPts = `${parsedPoints} pts`; /* Already has the minus symbol */
+                                typeClass = 'point-deduct'; 
+                                displayPts = `${parsedPoints} pts`; 
                             }
 
-                            // Build Card Frame
+                            // --- FIXED RECEIPT LINK LOGIC ---
                             let card;
-                            if (receiptLink && receiptLink.startsWith('http')) {
+                            // Check if receiptLink exists and is not just a dash
+                            if (receiptLink && receiptLink !== '-' && receiptLink !== '') {
                                 card = document.createElement('a');
-                                card.href = receiptLink;
+                                
+                                // If it already happens to be a full link, use it. Otherwise, assume it's a Drive ID.
+                                if (receiptLink.startsWith('http')) {
+                                    card.href = receiptLink;
+                                } else {
+                                    card.href = `https://drive.google.com/file/d/${receiptLink}/view`;
+                                }
+                                
                                 card.target = "_blank";
                                 card.className = 'point-card clickable';
                                 card.title = "Click to view receipt";
@@ -281,7 +278,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                 card.className = 'point-card';
                             }
 
-                            // Row 1: Title & Value
                             const row1 = document.createElement('div');
                             row1.className = `point-row-1 ${typeClass}`;
                             
@@ -294,7 +290,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             row1.appendChild(ptsSpan);
                             card.appendChild(row1);
 
-                            // Row 2: Date
                             if (dateText) {
                                 const dateDiv = document.createElement('div');
                                 dateDiv.className = 'point-date';
@@ -302,7 +297,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                 card.appendChild(dateDiv);
                             }
 
-                            // Row 3: Payment Method (only generated if not empty)
                             if (paymentText) {
                                 const payDiv = document.createElement('div');
                                 payDiv.className = 'point-payment';
@@ -313,7 +307,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             container.appendChild(card);
                         });
 
-                        // Display Total and apply red color if negative
                         totalDisplay.textContent = `Total points accumulated: ${totalPoints} pts`;
                         if (totalPoints < 0) {
                             totalDisplay.classList.add('negative');
@@ -368,7 +361,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         const userPlan = targetUserRow[6] ? targetUserRow[6].trim() : 'Premium (Legacy)';
                         const profilePicId = targetUserRow[7] ? targetUserRow[7].trim() : '';
                         
-                        // Profile Header Updates
                         document.getElementById('user-name').textContent = userName;
                         document.getElementById('top-acti-role').textContent = getFirstRole(actiRoleRaw);
                         document.getElementById('top-asti-role').textContent = getFirstRole(astiRoleRaw);
@@ -405,7 +397,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             profileImg.onerror = null; 
                         };
 
-                        // CALL THE ASYNC FETCH FUNCTIONS
                         loadAchievements(userName);
                         loadPoints(userName);
 
