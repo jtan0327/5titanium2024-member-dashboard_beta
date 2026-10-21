@@ -73,13 +73,13 @@ body {
     border-radius: 4px; 
 }
 
-/* Banner Update (Now uses the updated file name with underscore) */
+/* Banner Update (For Main Dashboard) */
 #banner { 
     background-image: url('banner_5.0.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-color: #4a86e8; /* Fallback color while image loads */
+    background-color: #4a86e8;
     height: 250px; 
     display: flex; 
     align-items: center; 
@@ -358,7 +358,27 @@ footer {
     font-weight: bold; 
 }
 
-/* --- Login Page Specific Styles --- */
+/* ========================================= */
+/* --- NEW LOGIN PAGE SPECIFIC STYLES --- */
+/* ========================================= */
+
+/* Sets the banner as the full background of the login page */
+.login-page-bg {
+    background-image: url('banner_5.0.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: #4a86e8; 
+}
+
+/* Makes the footer 50% transparent at the bottom of the login page */
+.login-page-bg footer {
+    background: rgba(255, 255, 255, 0.5); 
+    backdrop-filter: blur(8px); 
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 .login-wrapper { 
     display: flex; 
     justify-content: center; 
@@ -368,14 +388,17 @@ footer {
     margin-top: 50px; 
 }
 
+/* Updated Login Card: 50% transparent with Glassmorphism blur */
 .login-card { 
-    background: white; 
+    background: rgba(255, 255, 255, 0.5); /* 50% transparency */
+    backdrop-filter: blur(10px); /* Adds a modern frosted glass blur */
     padding: 40px; 
-    border-radius: 8px; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+    border-radius: 12px; 
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2); 
     width: 100%; 
     max-width: 450px; 
     text-align: center; 
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .login-card h2 { 
@@ -383,9 +406,11 @@ footer {
     font-size: 24px; 
 }
 
+/* Keep inputs solid white so they are easily readable */
 .login-card input { 
     width: 100%; 
     padding: 12px 10px; 
+    background: #ffffff;
     border: 1px solid #ccc; 
     border-radius: 4px; 
     font-size: 16px; 
@@ -421,6 +446,7 @@ footer {
     margin: 8px 0; 
     text-align: left; 
     font-family: sans-serif; 
+    font-weight: bold;
 }
 
 .welcome-text { 
@@ -455,8 +481,9 @@ footer {
 .protection-text { 
     margin-top: 30px; 
     font-size: 11px; 
-    color: #888; 
+    color: #333; 
     font-family: sans-serif; 
+    font-weight: bold;
 }
 
 /* Responsive / Mobile View */
